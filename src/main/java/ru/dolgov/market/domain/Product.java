@@ -78,17 +78,38 @@ public class Product implements Serializable{
 	public void setAvailible(boolean availible) {
 		this.availible = availible;
 	}
+	
+	public Integer getArticle() {
+		return article;
+	}
+
+	public void setArticle(Integer article) {
+		this.article = article;
+	}
 
 	@Override
-	public boolean equals(Object arg0) {
-		// TODO Auto-generated method stub
-		return super.equals(arg0);
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null || getClass() != other.getClass()) {
+			return false;
+		}
+		Product product = (Product)other;
+		if (product.getArticle() != null) {
+			if (!this.getArticle().equals(product.getArticle())) {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+		if (getArticle() != null) {
+			return 31 * getArticle();
+		}
+		return 0;
 	}
 	
 
