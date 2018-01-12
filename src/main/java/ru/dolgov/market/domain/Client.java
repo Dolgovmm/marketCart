@@ -64,6 +64,29 @@ public class Client implements Serializable{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
+ 
+        Client client = (Client) other;
+ 
+        if (client.getId() != null) {
+			if (!this.getId().equals(client.getId())) {
+				return false;
+			}
+		}
+        return true;
+	}
+
+	@Override
+	public int hashCode() {
+		if (getId() != null) {
+			return (int) (31 * getId());
+		}
+		return 0;
+	}
 	
 	
 

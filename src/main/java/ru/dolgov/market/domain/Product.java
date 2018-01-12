@@ -39,6 +39,31 @@ public class Product implements Serializable{
 	@Column(name = "availible")
 	private boolean availible;
 
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (other == null || getClass() != other.getClass()) {
+			return false;
+		}
+		Product product = (Product)other;
+		if (product.getArticle() != null) {
+			if (!this.getArticle().equals(product.getArticle())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		if (getArticle() != null) {
+			return 31 * getArticle();
+		}
+		return 0;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -86,31 +111,5 @@ public class Product implements Serializable{
 	public void setArticle(Integer article) {
 		this.article = article;
 	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (other == null || getClass() != other.getClass()) {
-			return false;
-		}
-		Product product = (Product)other;
-		if (product.getArticle() != null) {
-			if (!this.getArticle().equals(product.getArticle())) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		if (getArticle() != null) {
-			return 31 * getArticle();
-		}
-		return 0;
-	}
-	
 
 }
