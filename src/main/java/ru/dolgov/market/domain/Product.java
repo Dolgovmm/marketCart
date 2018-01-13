@@ -38,6 +38,19 @@ public class Product implements Serializable{
 	
 	@Column(name = "availible")
 	private boolean availible;
+	
+	public Product() {
+		
+	}
+	
+	public Product(Long id, String name, String description, int article, int price, boolean available) {
+		this.setId(id);
+		this.setName(name);
+		this.setDescription(description);
+		this.setArticle(article);
+		this.setPrice(price);
+		this.setAvailible(available);
+	}
 
 	@Override
 	public boolean equals(Object other) {
