@@ -6,7 +6,7 @@ CREATE TABLE `market`.`products` (
   `description` VARCHAR(45) NOT NULL,
   `price` INT NOT NULL,
   `article` INT NOT NULL,
-  `availible` INT NOT NULL,
+  `available` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC),
   UNIQUE INDEX `article_UNIQUE` (`article` ASC));
@@ -17,11 +17,13 @@ CREATE TABLE `market`.`Clients` (
   `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `phonenumber` VARCHAR(45) NOT NULL,
+  `cart_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
 CREATE TABLE `market`.`cart` (
   `id` INT NOT NULL AUTO_INCREMENT,
+  `client_id` INT NOT NULL,
   `total_items` INT NOT NULL,
   `products_cost` INT NOT NULL,
   PRIMARY KEY (`id`),

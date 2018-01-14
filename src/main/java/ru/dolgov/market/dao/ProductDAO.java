@@ -1,9 +1,8 @@
 package ru.dolgov.market.dao;
 
-import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,54 +10,56 @@ import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
 public class ProductDAO {
-	private final String GET_ALL_PRODUCTS = "select * from market.products;";
-	private final String GET_PRODUCT_BY_ID = "select * form market.products where id = ";
+	
+	private final String GET_ALL_PRODUCTS = "select * from products;";
+	private final String GET_PRODUCT_BY_ID = "select * from products where id = ?";
+	
+	PreparedStatement preparedStatementGetAll;
+	PreparedStatement preparedStatementGetById;
 	
 	public List<Product> getAllProducts() throws SQLException {
 		
-		Connection connection = DbConnection.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery(GET_ALL_PRODUCTS);
+		ResultSet rs = preparedStatementGetAll.executeQuery();
 		
 		List<Product> products = new ArrayList<>();
 		
 		while(rs.next()) {
-			Long id = rs.getLong("id");
+			int id = rs.getInt("id");
 			String name = rs.getString("name");
 			String description = rs.getString("description");
 			int article = rs.getInt("article");
 			int price = rs.getInt("price");
-			boolean available = rs.getBoolean("availible");
+			boolean available = rs.getBoolean("available");
 			Product product = new Product(id, name, description, article, price, available);
 			products.add(product);
 		}
-		
-		connection.close();
 		
 		return products;
 		
 	}
 	
-	public Product getProductById(Long id) throws SQLException {
+	public Product getProductById(int id) throws SQLException {
 		
-		Connection connection = DbConnection.getConnection();
-		Statement statement = connection.createStatement();
-		ResultSet rs = statement.executeQuery(GET_PRODUCT_BY_ID + id.toString() + ";");
+		preparedStatementGetById.setInt(1, id);
+		ResultSet rs = preparedStatementGetById.executeQuery();
 		
 		Product product = new Product();
 	
-		if (rs.next()) {
-			product.setId(rs.getLong("id"));
+		if (rs.next()) {;
+			product.setId(rs.getInt("id"));
 			product.setName(rs.getString("name"));
 			product.setDescription(rs.getString("description"));
 			product.setArticle(rs.getInt("article"));
 			product.setPrice(rs.getInt("price"));
-			product.setAvailible(rs.getBoolean("availible"));
+			product.setAvailable(rs.getBoolean("available"));
 		}
 		
-		connection.close();
-		
 		return product;
+	}
+	
+	public ProductDAO() throws SQLException {
+		preparedStatementGetAll = DbConnection.getConnection().prepareStatement(GET_ALL_PRODUCTS);
+		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_PRODUCT_BY_ID);
 	}
 
 }

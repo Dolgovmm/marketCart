@@ -19,7 +19,7 @@ public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", insertable = false, updatable = false, nullable = false)
-	private Long id;
+	private Integer id;
 	
 	@Column(name = "article")
 	@NotNull
@@ -36,20 +36,20 @@ public class Product implements Serializable{
 	@NotNull
 	private Integer price;
 	
-	@Column(name = "availible")
-	private boolean availible;
+	@Column(name = "available")
+	private boolean available;
 	
 	public Product() {
 		
 	}
 	
-	public Product(Long id, String name, String description, int article, int price, boolean available) {
+	public Product(int id, String name, String description, int article, int price, boolean available) {
 		this.setId(id);
 		this.setName(name);
 		this.setDescription(description);
 		this.setArticle(article);
 		this.setPrice(price);
-		this.setAvailible(available);
+		this.setAvailable(available);
 	}
 
 	@Override
@@ -77,11 +77,11 @@ public class Product implements Serializable{
 		return 0;
 	}
 	
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -109,12 +109,12 @@ public class Product implements Serializable{
 		this.price = price;
 	}
 
-	public boolean isAvailible() {
-		return availible;
+	public boolean isAvailable() {
+		return available;
 	}
 
-	public void setAvailible(boolean availible) {
-		this.availible = availible;
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 	
 	public Integer getArticle() {

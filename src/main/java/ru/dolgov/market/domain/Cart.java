@@ -12,7 +12,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cart")
@@ -23,7 +26,12 @@ public class Cart implements Serializable{
 	@Id
 	@Column(name = "id", insertable = false, updatable = false, nullable = false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Integer id;
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+    @NotNull
+	private Client client;
 	
 	@Column(name = "total_items")
 	private int totalItems;
@@ -75,12 +83,37 @@ public class Cart implements Serializable{
         setProductsCost(cost);
         setTotalItems(total);
     }
-    
-   	public Long getId() {
+       
+   	@Override
+	public boolean equals(Object other) {
+   		if (this == other) {
+			return true;
+		}
+		if (other == null || getClass() != other.getClass()) {
+			return false;
+		}
+		Cart cart = (Cart)other;
+		if (cart.getId() != null) {
+			if (!this.getId().equals(cart.getId())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		if (getId() != null) {
+			return 31 * getId();
+		}
+		return 0;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -106,6 +139,14 @@ public class Cart implements Serializable{
 
 	public void setCartItems(List<CartItem> cartItems) {
 		this.cartItems = cartItems;
+	}
+
+	public Client getClient() {
+		return client;
+	}
+
+	public void setClient(Client client) {
+		this.client = client;
 	}  
 	
 }
