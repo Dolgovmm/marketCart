@@ -9,6 +9,7 @@ import org.junit.Test;
 import junit.framework.Assert;
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.CartItem;
+import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
@@ -22,23 +23,32 @@ public class TestCartItemDAO {
 			CartItemDAO dao = new CartItemDAO();
 			Cart cart = new Cart();
 			cart.update(new Product(1, "name", "desc", 100, 200, true), 10);
+			cart.setId(1);
 			
-			dao.saveCartItem(cart.getCartItems().get(0));
+			CartItem cartItem = cart.getCartItems().get(0);
 			
-			CartItem cartItemFromDb = new CartItem();
+			dao.saveCartItem(cartItem);
 			
 			Statement statement = DbConnection.getConnection().createStatement();
-			ResultSet rs = statement.executeQuery("select * from cart_items;");
+			ResultSet rs = statement
+					.executeQuery("select * from cart_items limit 1;");
+
+			int id = -1;
+			int cartId = -1;
+			int productId = -1;
+			int quantity = -1;
 			
 			if (rs.next()) {
-				cartItemFromDb.setCart(rs.getObject("cart_id", Cart.class));
-				cartItemFromDb.setProduct(rs.getObject("product_id", Product.class));
-				cartItemFromDb.setQuantity(rs.getInt("quantity"));
+				id = rs.getInt("id");
+				cartId = rs.getInt("cart_id");
+				productId = rs.getInt("product_id");
+				quantity = rs.getInt("quantity");
 			}
 			
 			DbConnection.getConnection().rollback();
 			
-			Assert.assertEquals(cart.getCartItems().get(0), cartItemFromDb);
+			Assert.assertTrue(cartItem.getId() == id & cartItem.getCart().getId() == cartId 
+					& cartItem.getProduct().getId() == productId & cartItem.getQuantity() == quantity);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

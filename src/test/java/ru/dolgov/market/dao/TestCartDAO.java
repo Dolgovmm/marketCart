@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 import ru.dolgov.market.domain.Cart;
+import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
@@ -21,10 +22,18 @@ public class TestCartDAO {
 			
 			CartDAO dao = new CartDAO();
 			Cart cart = new Cart();
+			
 			cart.update(new Product(1, "name", "desc", 100, 200, true), 10);
 			
-			dao.saveCart(cart);
+			Client client = new Client();
+			client.setId(1);
+			client.setName("some name");
+			client.setEmail("some email");
+			client.setPhoneNumber("phone number");
+			cart.setClient(client);
 			
+			dao.saveCart(cart);
+
 			Cart cartFromDb = new Cart();
 			
 			Statement statement = DbConnection.getConnection().createStatement();
@@ -56,6 +65,13 @@ public class TestCartDAO {
 			Cart cart = new Cart();
 			Product product = new Product(1, "name", "desc", 100, 200, true);
 			cart.update(product, 10);
+			
+			Client client = new Client();
+			client.setId(1);
+			client.setName("some name");
+			client.setEmail("some email");
+			client.setPhoneNumber("phone number");
+			cart.setClient(client);
 			
 			dao.saveCart(cart);
 			
