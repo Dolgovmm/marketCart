@@ -5,11 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import ru.dolgov.market.dao.interfaces.ClientDAO;
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.jdbc.DbConnection;
 
-public class ClientDAO {
+public class ClientDAOImpl implements ClientDAO{
 	private final String GET_CLIENT_BY_ID = "select * from market.Clients inner join market.cart where Clients.id = ? and Clients.id = cart.client_id;";
 	private final String SAVE_CLIENT = "insert into Clients (name, email, phonenumber, cart_id) values (?, ?, ?, ?)";
 	private final String GET_ID_CLIENT = "select @@IDENTITY";
@@ -57,20 +58,9 @@ public class ClientDAO {
 		client.setId(id);		
 	}
 	
-	public ClientDAO() throws SQLException {
+	public ClientDAOImpl() throws SQLException {
 		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_CLIENT_BY_ID);
 		preparedStatementSaveClient = DbConnection.getConnection().prepareStatement(SAVE_CLIENT);
 	}
-	
-	public static void main(String args[]) {
-		try {
-			ClientDAO dao = new ClientDAO();
-			Client client = dao.getClientById(3);
-			System.out.println(client.getCart().getId());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
+
 }

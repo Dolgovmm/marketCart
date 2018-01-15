@@ -9,7 +9,7 @@ import java.util.List;
 import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
-public class ProductDAO {
+public class ProductDAOImpl {
 	
 	private final String GET_ALL_PRODUCTS = "select * from products;";
 	private final String GET_PRODUCT_BY_ID = "select * from products where id = ?";
@@ -57,7 +57,7 @@ public class ProductDAO {
 		return product;
 	}
 	
-	public ProductDAO() throws SQLException {
+	public ProductDAOImpl() throws SQLException {
 		preparedStatementGetAll = DbConnection.getConnection().prepareStatement(GET_ALL_PRODUCTS);
 		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_PRODUCT_BY_ID);
 	}

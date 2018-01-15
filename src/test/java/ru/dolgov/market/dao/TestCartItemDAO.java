@@ -9,7 +9,6 @@ import org.junit.Test;
 import junit.framework.Assert;
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.CartItem;
-import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
@@ -20,7 +19,7 @@ public class TestCartItemDAO {
 		try {
 			DbConnection.getConnection().setAutoCommit(false);
 			
-			CartItemDAO dao = new CartItemDAO();
+			CartItemDAOImpl dao = new CartItemDAOImpl();
 			Cart cart = new Cart();
 			cart.update(new Product(1, "name", "desc", 100, 200, true), 10);
 			cart.setId(1);

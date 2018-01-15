@@ -38,7 +38,7 @@ public class TestClientDAO {
 			}
 			client.setId(id);
 			
-			ClientDAO dao = new ClientDAO();
+			ClientDAOImpl dao = new ClientDAOImpl();
 			
 			Client clientFromDb = dao.getClientById(client.getId());
 			
@@ -65,7 +65,7 @@ public class TestClientDAO {
 		client.setPhoneNumber("123456789");
 		client.setEmail("someAddress@mail.ru");
 		
-		ClientDAO dao = new ClientDAO();
+		ClientDAOImpl dao = new ClientDAOImpl();
 		
 		dao.saveClient(client);
 		

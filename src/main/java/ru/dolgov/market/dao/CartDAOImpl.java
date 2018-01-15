@@ -5,10 +5,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import ru.dolgov.market.dao.interfaces.CartDAO;
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.jdbc.DbConnection;
 
-public class CartDAO {
+public class CartDAOImpl implements CartDAO{
 	private final String INSERT_CART = "insert into cart (client_id, total_items, products_cost) values (?, ?, ?)";
 	private final String UPDATE_CART = "update cart set client_id = ?, total_items = ?, products_cost = ? where id = ?";
 	private final String GET_ID_CART = "select @@IDENTITY";
@@ -46,7 +47,7 @@ public class CartDAO {
 		
 	}
 	
-	public CartDAO() throws SQLException {
+	public CartDAOImpl() throws SQLException {
 		preparedStatementInsertCart = DbConnection.getConnection().prepareStatement(INSERT_CART);
 		preparedStatementUpdateCart = DbConnection.getConnection().prepareStatement(UPDATE_CART);
 	}

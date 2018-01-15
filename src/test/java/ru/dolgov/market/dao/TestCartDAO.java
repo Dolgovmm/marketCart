@@ -20,7 +20,7 @@ public class TestCartDAO {
 		try {
 			DbConnection.getConnection().setAutoCommit(false);
 			
-			CartDAO dao = new CartDAO();
+			CartDAOImpl dao = new CartDAOImpl();
 			Cart cart = new Cart();
 			
 			cart.update(new Product(1, "name", "desc", 100, 200, true), 10);
@@ -33,20 +33,26 @@ public class TestCartDAO {
 			cart.setClient(client);
 			
 			dao.saveCart(cart);
-
-			Cart cartFromDb = new Cart();
 			
 			Statement statement = DbConnection.getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("select * from cart limit 1;");
 			
+			int id = -1;
+			int clientId = -1;
+			int totalItems = -1;
+			int productsCost = -1;
+			
 			if (rs.next()) {
-				cartFromDb.setTotalItems(rs.getInt("total_items"));
-				cartFromDb.setProductsCost(rs.getInt("products_cost"));
+				id = rs.getInt("id");
+				clientId = rs.getInt("client_id");
+				totalItems = rs.getInt("total_items");
+				productsCost = rs.getInt("prducts_cost");
 			}
 			
 			DbConnection.getConnection().rollback();
 			
-			Assert.assertEquals(cart, cartFromDb);
+			Assert.assertTrue(cart.getId() == id && cart.getClient().getId() == clientId 
+					&& cart.getTotalItems() == totalItems && cart.getProductsCost() == productsCost);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -60,7 +66,7 @@ public class TestCartDAO {
 			
 			DbConnection.getConnection().setAutoCommit(false);
 			
-			CartDAO dao = new CartDAO();
+			CartDAOImpl dao = new CartDAOImpl();
 			
 			Cart cart = new Cart();
 			Product product = new Product(1, "name", "desc", 100, 200, true);

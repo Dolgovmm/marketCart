@@ -1,5 +1,6 @@
 package ru.dolgov.market.dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -20,13 +21,20 @@ public class TestProductDAO {
 			
 			DbConnection.getConnection().setAutoCommit(false);
 			
-			ProductDAO dao = new ProductDAO();
+			ProductDAOImpl dao = new ProductDAOImpl();
 			
-			Statement statement = DbConnection.getConnection().createStatement();
-			statement.execute("insert into products (name, description, article, price, available) " 
-			+ "values ('some Name', 'some description', 12345, 23456, true)");
-			statement.execute("insert into products (name, description, article, price, available) "
-			+ "values ('some Name2', 'some description2', 123456, 1234567, false)");			
+			PreparedStatement preparedStatement = DbConnection.getConnection()
+					.prepareStatement("insert into products (name, description, article, price, available)" 
+			+ " values (?, ?, ?, ?, ?)");
+			
+			for (int i = 0; i < 5; i++) {
+				preparedStatement.setString(1, "some name" + i);
+				preparedStatement.setString(2, "some description" + i);
+				preparedStatement.setInt(3, 1000 + i);
+				preparedStatement.setInt(4, 100 + i);
+				preparedStatement.setBoolean(5, true);
+				preparedStatement.execute();
+			}
 			
 			List<Product> products = dao.getAllProducts();
 			
@@ -49,18 +57,27 @@ public class TestProductDAO {
 			
 			Product product = new Product(1, "some name", "some desc", 123456, 100, true);
 			
+			PreparedStatement preparedStatement = DbConnection.getConnection()
+					.prepareStatement("insert into products (name, description, article, price, available)" 
+			+ " values (?, ?, ?, ?, ?)");
+			
+			preparedStatement.setString(1, product.getName());
+			preparedStatement.setString(2, product.getDescription());
+			preparedStatement.setInt(3, product.getArticle());
+			preparedStatement.setInt(4, product.getPrice());
+			preparedStatement.setBoolean(5, product.isAvailable());
+			preparedStatement.execute();
+			
 			Statement statement = DbConnection.getConnection().createStatement();
-			statement.execute("insert into products (name, description, article, price, available)"
-			+ " values ('" + product.getName() + "', '" + product.getDescription() + "', " + product.getArticle()
-			+ ", " + product.getPrice() + ", " + product.isAvailable() + ")");
 			ResultSet rs = statement.executeQuery("select @@IDENTITY");
+			
 			int id = -1;
 			if (rs.next()) {
 				id = rs.getInt(1);
 			}
 			product.setId(id);
 			
-			ProductDAO dao = new ProductDAO();
+			ProductDAOImpl dao = new ProductDAOImpl();
 			Product productFromDb = dao.getProductById(id);
 			
 			DbConnection.getConnection().rollback();
