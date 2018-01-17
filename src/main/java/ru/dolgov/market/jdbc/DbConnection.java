@@ -6,10 +6,10 @@ import java.sql.SQLException;
 
 public class DbConnection {
 
-   //static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
-   static final String DB_URL = "jdbc:mysql://localhost/market";
-   static final String USER = "user";
-   static final String PASS = "user";
+//   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   private static final String DB_URL = "jdbc:mysql://localhost/market";
+   private static final String USER = "user";
+   private static final String PASS = "user";
    
    private static Connection connection;
    
@@ -24,6 +24,7 @@ public class DbConnection {
 			   if (connection == null) {
 				   try {
 					   connection = DriverManager.getConnection(DB_URL,USER,PASS);
+					   System.out.println("create connection");
 				   }catch(SQLException ex) {
 					   ex.printStackTrace();
 				   }
@@ -32,5 +33,15 @@ public class DbConnection {
 	   }
 	   return connection;
    }
-	   
+   
+   public static void shutdown() {
+	   try {
+		   if (connection != null) {
+			   connection.close();
+		   }
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+   }   
 }

@@ -20,6 +20,7 @@ public class ProductController extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	private final String PRODUCTS_LIST = "/productslist.jsp";
+	private final String PRODUCTS_IN_CART = "/productsincart.jsp";
 	private final String PRODUCT = "/product.jsp";
 	private final String ORDER = "/order.jsp";
 	private final String CONFIRM = "/confirm.jsp";
@@ -57,11 +58,10 @@ public class ProductController extends HttpServlet{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 				
 		if (action.equalsIgnoreCase("productFromCart")) {
-			forward = PRODUCTS_LIST;
+			forward = PRODUCTS_IN_CART;
 
 			String cartId = getCartId(request, response);
 			
@@ -72,7 +72,6 @@ public class ProductController extends HttpServlet{
 			forward = PRODUCTS_LIST;
 			
 			String cartId = getCartId(request, response);
-			
 			String productId = request.getParameter("productId");
 			
 			try {
@@ -87,16 +86,8 @@ public class ProductController extends HttpServlet{
 			forward = ORDER;
 		}
 		
-		if (request.getSession().isNew()) {
-			storage.createNewCart(request.getSession().getId());
-			Cookie cookie = new Cookie("cartId", request.getSession().getId());
-			response.addCookie(cookie);
-		}
-		
 		RequestDispatcher view = request.getRequestDispatcher(forward);
 		view.forward(request,  response);
-		
-		
 	}
 
 	@Override

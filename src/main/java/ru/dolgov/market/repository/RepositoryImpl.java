@@ -8,6 +8,7 @@ import ru.dolgov.market.dao.interfaces.CartItemDAO;
 import ru.dolgov.market.dao.interfaces.ClientDAO;
 import ru.dolgov.market.dao.interfaces.ProductDAO;
 import ru.dolgov.market.domain.Cart;
+import ru.dolgov.market.domain.CartItem;
 import ru.dolgov.market.domain.Product;
 
 public class RepositoryImpl implements Repository{
@@ -30,6 +31,10 @@ public class RepositoryImpl implements Repository{
 	@Override
 	public void saveCart(Cart cart) throws SQLException {
 		cartDAO.saveCart(cart);
+		for (CartItem cartItem : cart.getCartItems()) {
+			cartItemDAO.saveCartItem(cartItem);
+		}
+		clientDAO.saveClient(cart.getClient());
 		
 	}
 

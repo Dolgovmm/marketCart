@@ -17,7 +17,6 @@ CREATE TABLE `market`.`Clients` (
   `name` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NOT NULL,
   `phonenumber` VARCHAR(45) NOT NULL,
-  `cart_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 
@@ -43,9 +42,9 @@ INSERT INTO `market`.`Clients` (`name`, `email`, `phonenumber`) VALUES ('Alex', 
 INSERT INTO `market`.`Clients` (`name`, `email`, `phonenumber`) VALUES ('John', 'john@mail.ru', '234567891');
 INSERT INTO `market`.`Clients` (`name`, `email`, `phonenumber`) VALUES ('Parker', 'parker@mail.ru', '345678912');
 
-INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `availible`) VALUES ('telephon', 'telephone description', '1000', '1000001', '1');
-INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `availible`) VALUES ('sd card', 'sd card description', '500', '1000002', '1');
-INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `availible`) VALUES ('flash', 'flash description', '400', '1000003', '1');
+INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `available`) VALUES ('telephon', 'telephone description', '1000', '1000001', '1');
+INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `available`) VALUES ('sd card', 'sd card description', '500', '1000002', '1');
+INSERT INTO `market`.`products` (`name`, `description`, `price`, `article`, `available`) VALUES ('flash', 'flash description', '400', '1000003', '1');
 
 
 
