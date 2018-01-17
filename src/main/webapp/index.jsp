@@ -5,6 +5,6 @@
         <title>Market cart</title>
     </head>
     <body>
-        <jsp:forward page="/productslist?action=productsList" />
+        <jsp:forward page="/products?action=productsList" />
     </body>
 </html>

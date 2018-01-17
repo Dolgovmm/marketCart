@@ -6,16 +6,22 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.dolgov.market.dao.interfaces.ProductDAO;
 import ru.dolgov.market.domain.Product;
 import ru.dolgov.market.jdbc.DbConnection;
 
-public class ProductDAOImpl {
+public class ProductDAOImpl implements ProductDAO{
 	
 	private final String GET_ALL_PRODUCTS = "select * from products;";
 	private final String GET_PRODUCT_BY_ID = "select * from products where id = ?";
 	
 	PreparedStatement preparedStatementGetAll;
 	PreparedStatement preparedStatementGetById;
+	
+	public ProductDAOImpl() throws SQLException {
+		preparedStatementGetAll = DbConnection.getConnection().prepareStatement(GET_ALL_PRODUCTS);
+		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_PRODUCT_BY_ID);
+	}
 	
 	public List<Product> getAllProducts() throws SQLException {
 		
@@ -56,10 +62,4 @@ public class ProductDAOImpl {
 		
 		return product;
 	}
-	
-	public ProductDAOImpl() throws SQLException {
-		preparedStatementGetAll = DbConnection.getConnection().prepareStatement(GET_ALL_PRODUCTS);
-		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_PRODUCT_BY_ID);
-	}
-
 }

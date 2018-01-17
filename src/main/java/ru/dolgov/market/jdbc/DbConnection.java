@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class DbConnection {
 
-//   static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";  
+   static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
    private static final String DB_URL = "jdbc:mysql://localhost/market";
    private static final String USER = "user";
    private static final String PASS = "user";
@@ -23,9 +23,9 @@ public class DbConnection {
 		   synchronized(DbConnection.class) { 
 			   if (connection == null) {
 				   try {
+					   Class.forName(JDBC_DRIVER);
 					   connection = DriverManager.getConnection(DB_URL,USER,PASS);
-					   System.out.println("create connection");
-				   }catch(SQLException ex) {
+				   }catch(SQLException | ClassNotFoundException ex) {
 					   ex.printStackTrace();
 				   }
 			   }

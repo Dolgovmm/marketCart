@@ -2,7 +2,6 @@ package ru.dolgov.market.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -28,7 +27,13 @@ public class ProductController extends HttpServlet{
 	private Storage storage;
 
 	public ProductController() {
-		storage = new StorageImpl();
+		super();
+		try {
+			storage = new StorageImpl();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -53,18 +58,35 @@ public class ProductController extends HttpServlet{
 			Product product;
 			try {
 				product = storage.getProductById(productId);
+				System.out.println(product.getName());
 				request.setAttribute("product", product);
 			} catch (NumberFormatException | SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+		
+		if (action.equalsIgnoreCase("addProduct")) {
+			forward = PRODUCTS_LIST;
+			String cartId = getCartId(request, response);
+			String productId = (String) request.getAttribute("productId");
+			String productQuantity = (String) request.getAttribute("quantity");
+			
+			try {
+				storage.addProductToCart(cartId, productId, "1");//productQuantity);
+				request.setAttribute("products", storage.getAllProducts());
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 				
 		if (action.equalsIgnoreCase("productFromCart")) {
 			forward = PRODUCTS_IN_CART;
 
 			String cartId = getCartId(request, response);
-			
+			System.out.println(cartId);
 			request.setAttribute("products", storage.getProductsFromCart(cartId));
 		}
 		
@@ -111,20 +133,6 @@ public class ProductController extends HttpServlet{
 				ex.printStackTrace();
 			}
 		}		
-		
-		if (action.equalsIgnoreCase("addProduct")) {
-			forward = PRODUCTS_LIST;
-			String cartId = getCartId(request, response);
-			String productId = (String) request.getAttribute("productId");
-			String productQuantity = (String) request.getAttribute("quantity");
-			try {
-				storage.addProductToCart(cartId, productId, productQuantity);
-			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(forward);
 		view.forward(request,  response);

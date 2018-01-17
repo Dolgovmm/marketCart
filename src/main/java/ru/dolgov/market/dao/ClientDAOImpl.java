@@ -11,8 +11,8 @@ import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.jdbc.DbConnection;
 
 public class ClientDAOImpl implements ClientDAO{
-	private final String GET_CLIENT_BY_ID = "select * from market.Clients inner join market.cart where Clients.id = ? and Clients.id = cart.client_id;";
-	private final String SAVE_CLIENT = "insert into Clients (name, email, phonenumber, cart_id) values (?, ?, ?, ?)";
+	private final String GET_CLIENT_BY_ID = "select * from market.Clients where Clients.id = ?;";
+	private final String SAVE_CLIENT = "insert into Clients (name, email, phonenumber) values (?, ?, ?)";
 	private final String GET_ID_CLIENT = "select @@IDENTITY";
 	
 	private PreparedStatement preparedStatementGetById;
@@ -30,11 +30,6 @@ public class ClientDAOImpl implements ClientDAO{
 			client.setName(rs.getString("name"));
 			client.setPhoneNumber(rs.getString("phonenumber"));
 			client.setEmail(rs.getString("email"));
-			Cart cart = new Cart();
-			cart.setId(rs.getInt("id"));
-			cart.setTotalItems(rs.getInt("total_items"));
-			cart.setProductsCost(rs.getInt("products_cost"));
-			client.setCart(cart);
 		}
 		
 		return client;
@@ -46,7 +41,6 @@ public class ClientDAOImpl implements ClientDAO{
 		preparedStatementGetById.setString(1, client.getName());
 		preparedStatementGetById.setString(2, client.getEmail());
 		preparedStatementGetById.setString(3, client.getPhoneNumber());
-		preparedStatementGetById.setInt(4, client.getCart().getId());
 		preparedStatementSaveClient.execute();
 		
 		Statement statement = DbConnection.getConnection().createStatement();

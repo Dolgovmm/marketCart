@@ -17,7 +17,7 @@ public class StorageImpl implements Storage{
 	private Repository repository;
 	private Map<String, Cart> carts;
 	
-	public StorageImpl() {
+	public StorageImpl() throws SQLException {
 		repository = new RepositoryImpl();
 		carts = new HashMap<>();
 	}

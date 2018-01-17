@@ -3,6 +3,10 @@ package ru.dolgov.market.repository;
 import java.sql.SQLException;
 import java.util.List;
 
+import ru.dolgov.market.dao.CartDAOImpl;
+import ru.dolgov.market.dao.CartItemDAOImpl;
+import ru.dolgov.market.dao.ClientDAOImpl;
+import ru.dolgov.market.dao.ProductDAOImpl;
 import ru.dolgov.market.dao.interfaces.CartDAO;
 import ru.dolgov.market.dao.interfaces.CartItemDAO;
 import ru.dolgov.market.dao.interfaces.ClientDAO;
@@ -18,6 +22,13 @@ public class RepositoryImpl implements Repository{
 	private CartDAO cartDAO;
 	private CartItemDAO cartItemDAO;
 
+	public RepositoryImpl() throws SQLException {
+		productDAO = new ProductDAOImpl();
+		clientDAO = new ClientDAOImpl();
+		cartDAO = new CartDAOImpl();
+		cartItemDAO = new CartItemDAOImpl();
+	}
+	
 	@Override
 	public List<Product> getAllProducts() throws SQLException {
 		return productDAO.getAllProducts();
