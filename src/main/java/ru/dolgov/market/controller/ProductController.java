@@ -8,6 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.domain.Product;
@@ -31,7 +32,6 @@ public class ProductController extends HttpServlet{
 		try {
 			storage = new StorageImpl();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -47,7 +47,6 @@ public class ProductController extends HttpServlet{
 			try {
 				request.setAttribute("products", storage.getAllProducts());
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -58,48 +57,43 @@ public class ProductController extends HttpServlet{
 			Product product;
 			try {
 				product = storage.getProductById(productId);
-				System.out.println(product.getName());
 				request.setAttribute("product", product);
 			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
 		if (action.equalsIgnoreCase("addProduct")) {
 			forward = PRODUCTS_LIST;
-			String cartId = getCartId(request, response);
+			String cartId = getCartId(request.getSession(true));
 			String productId = (String) request.getAttribute("productId");
-			String productQuantity = (String) request.getAttribute("quantity");
+			//String productQuantity = (String) request.getAttribute("quantity");
 			
 			try {
-				storage.addProductToCart(cartId, productId, "1");//productQuantity);
+				storage.addProductToCart(cartId, productId, 1);
 				request.setAttribute("products", storage.getAllProducts());
 			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 				
 		if (action.equalsIgnoreCase("productFromCart")) {
 			forward = PRODUCTS_IN_CART;
 
-			String cartId = getCartId(request, response);
-			System.out.println(cartId);
-			request.setAttribute("products", storage.getProductsFromCart(cartId));
+			String cartId = getCartId(request.getSession(true));
+			
+			request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
 		}
 		
 		if (action.equalsIgnoreCase("removeProduct")) {
 			forward = PRODUCTS_LIST;
 			
-			String cartId = getCartId(request, response);
+			String cartId = getCartId(request.getSession(true));
 			String productId = request.getParameter("productId");
 			
 			try {
 				storage.removeProductFromCart(cartId, productId);
 			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -123,7 +117,7 @@ public class ProductController extends HttpServlet{
 			client.setEmail((String) request.getAttribute("email"));
 			client.setPhoneNumber((String) request.getAttribute("phoneNumber"));
 			
-			String cartId = getCartId(request, response);
+			String cartId = getCartId(request.getSession(true));
 			
 			storage.addClientToCart(cartId, client);
 			
@@ -134,24 +128,45 @@ public class ProductController extends HttpServlet{
 			}
 		}		
 		
+		if (action.equalsIgnoreCase("updateProduct")) {
+			forward = PRODUCTS_IN_CART;
+			int quantity = (int) request.getAttribute("quantity");
+			String cartId = getCartId(request.getSession(true));
+			try {
+				storage.addProductToCart(cartId, productId, quantity);
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
 		RequestDispatcher view = request.getRequestDispatcher(forward);
 		view.forward(request,  response);
 	}
 	
-	private String getCartId(HttpServletRequest request, HttpServletResponse response) {
-		String cartId = "";
-		Cookie[] cookies = request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			if (cookies[i].getName().equals("cartId")) {
-				cartId = cookies[i].getValue();
-			}
-		}
-		if (cartId.isEmpty()) {
-			cartId = request.getSession().getId();
-			storage.createNewCart(request.getSession().getId());
-			Cookie cookie = new Cookie("cartId", request.getSession().getId());
-			response.addCookie(cookie);
-		}
+	private String getCartId(HttpSession session) {
+		String cartId;
+		cartId = (String)session.getAttribute("cartId");
+		if (cartId == null) {
+		    cartId = session.getId();
+		    storage.createNewCart(cartId);
+		    session.setAttribute("cartId", cartId);
+		    
+		}   
+		System.out.println(cartId);
+//		Cookie[] cookies = request.getCookies();
+//		for (int i = 0; i < cookies.length; i++) {
+//			if (cookies[i].getName().equals("cartId")) {
+//				cartId = cookies[i].getValue();
+//			}
+//		}
+//		if (cartId.isEmpty()) {
+//			cartId = request.getSession().getId();
+//			storage.createNewCart(request.getSession().getId());
+//			Cookie cookie = new Cookie("cartId", request.getSession().getId());
+//			response.addCookie(cookie);
+//		}
 		return cartId;
 	}
 }

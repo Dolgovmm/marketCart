@@ -33,9 +33,9 @@ public class StorageImpl implements Storage{
 	}
 
 	@Override
-	public void addProductToCart(String cartId, String productId, String productQuantity) throws NumberFormatException, SQLException {
+	public void addProductToCart(String cartId, String productId, int productQuantity) throws NumberFormatException, SQLException {
 		Product product = repository.getProductById(Integer.parseInt(productId));
-		carts.get(cartId).update(product, Integer.parseInt(productQuantity));
+		carts.get(cartId).update(product, productQuantity);
 	}
 
 	@Override
@@ -57,7 +57,6 @@ public class StorageImpl implements Storage{
 	@Override
 	public void createNewCart(String id) {
 		carts.put(id, new Cart());
-		
 	}
 	
 	@Override

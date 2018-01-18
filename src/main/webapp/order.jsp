@@ -9,18 +9,12 @@
     </head>
     <body>
         <form method="POST" action='ProductController' name="frmAddClient">
-            <% String action = request.getParameter("action");
-                System.out.println(action);
-            %>
-            <% if (action.equalsIgnoreCase("confirmOrder")) {%>
             Client Name : <input type="text" name="name"
                                value="<c:out value="${client.uname}" />" /> <br /> 
-            <%} else {%>
             Client email : <input type="text" name="email"
                                value="<c:out value="${client.email}" />" /> <br />
             Client phone number : <input type="text" name="phoneNumber"
                 				value="<c:out value="${client.phoneNumber}" />" /> <br /> 
-            <%}%>
             <input  type="submit" value="Submit" />
         </form>
     </body>

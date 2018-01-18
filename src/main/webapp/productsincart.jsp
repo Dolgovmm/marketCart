@@ -14,21 +14,28 @@
                 <th>Product Name</th>
                 <th>Price</th>
                 <th>Available</th>
+                <th>Quantity</th>
                 <th colspan=2>Action</th>
             </tr>
         </thead>
         <tbody>
-            <c:forEach items="${products}" var="product">
+            <c:forEach items="${cartItems}" var="cartItem">
                 <tr>
-                    <td><c:out value="${product.name}" /></td>
-                    <td><c:out value="${product.price}" /></td>
-                    <td><c:out value="${product.available}" /></td>
-                    <td><a href="products?action=productId&productId=<c:out value="${product.id}"/>">more</a></td>
-                    <td><a href="products?action=addProduct&productId=<c:out value="${product.id}"/>">add to cart</a></td>
+                    <td><c:out value="${cartItem.product.name}" /></td>
+                    <td><c:out value="${cartItem.product.price}" /></td>
+                    <td><c:out value="${cartItem.product.available}" /></td>
+                    <td><c:out value="${cartItem.quantity}" /></td>
+                    <td><a href="products?action=productId&productId=<c:out value="${cartItem.product.id}"/>">more</a></td>
+					<td><form method="POST" action='updateProduct' name="frmUpdateProduct">
+			            
+			            <input type="text" name="quantity" value="<c:out value="${cartItem.quantity}" />" /> 
+			            <input  type="submit" value="Submit" />
+			        </form></td>
                 </tr>
             </c:forEach>
         </tbody>
     </table>
-    <p><a href="products?action=productFromCart">Show cart</a></p>
+    <p><a href="products?action=order">Create order</a></p>
+    <p><a href="products?action=productsList">Back to products list</a></p>
 </body>
 </html>
