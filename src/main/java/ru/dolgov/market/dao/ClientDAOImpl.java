@@ -11,16 +11,16 @@ import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.jdbc.DbConnection;
 
 public class ClientDAOImpl implements ClientDAO{
-	private final String GET_CLIENT_BY_ID = "select * from market.Clients where Clients.id = ?;";
+	private final String GET_CLIENT_BY_ID = "select * from Clients where email = ?;";
 	private final String SAVE_CLIENT = "insert into Clients (name, email, phonenumber) values (?, ?, ?)";
 	private final String GET_ID_CLIENT = "select @@IDENTITY";
 	
 	private PreparedStatement preparedStatementGetById;
 	private PreparedStatement preparedStatementSaveClient;
 
-	public Client getClientById(Integer id) throws SQLException {
+	public Client getClientByEmail(String email) throws SQLException {
 		
-		preparedStatementGetById.setInt(1, id);
+		preparedStatementGetById.setString(1, email);
 		ResultSet rs = preparedStatementGetById.executeQuery();
 		
 		Client client = new Client();

@@ -73,8 +73,8 @@ public class Client implements Serializable{
  
         Client client = (Client) other;
  
-        if (client.getId() != null) {
-			if (!this.getId().equals(client.getId())) {
+        if (client.getEmail() != null & this.getEmail() != null) {
+			if (!this.getEmail().equals(client.getEmail())) {
 				return false;
 			}
 		}

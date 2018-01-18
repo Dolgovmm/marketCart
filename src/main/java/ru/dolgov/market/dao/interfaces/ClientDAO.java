@@ -6,7 +6,7 @@ import ru.dolgov.market.domain.Client;
 
 public interface ClientDAO {
 
-	public Client getClientById(Integer id) throws SQLException;
+	public Client getClientByEmail(String email) throws SQLException;
 	
 	public void saveClient(Client client) throws SQLException;
 }

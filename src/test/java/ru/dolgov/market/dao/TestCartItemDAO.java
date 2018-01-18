@@ -30,7 +30,7 @@ public class TestCartItemDAO {
 			
 			Statement statement = DbConnection.getConnection().createStatement();
 			ResultSet rs = statement
-					.executeQuery("select * from cart_items limit 1;");
+					.executeQuery("select * from cart_items where id = " + cartItem.getId() + ";");
 
 			int id = -1;
 			int cartId = -1;

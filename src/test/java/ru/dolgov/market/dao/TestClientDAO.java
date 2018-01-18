@@ -14,7 +14,7 @@ import ru.dolgov.market.jdbc.DbConnection;
 public class TestClientDAO {
 
 	@Test
-	public void testGetClientById(){
+	public void testGetClientByEmail(){
 		
 		try {
 			DbConnection.getConnection().setAutoCommit(false);
@@ -40,7 +40,7 @@ public class TestClientDAO {
 			
 			ClientDAOImpl dao = new ClientDAOImpl();
 			
-			Client clientFromDb = dao.getClientById(client.getId());
+			Client clientFromDb = dao.getClientByEmail(client.getEmail());
 			
 			DbConnection.getConnection().rollback();
 			DbConnection.getConnection().setAutoCommit(true);
@@ -70,7 +70,7 @@ public class TestClientDAO {
 		dao.saveClient(client);
 		
 		Statement statement = DbConnection.getConnection().createStatement();
-		ResultSet rs = statement.executeQuery("select * from Clients limit 1;");
+		ResultSet rs = statement.executeQuery("select * from Clients where id = " + client.getId() + ";");
 		
 		Client clientFromDb = new Client();
 		
