@@ -41,12 +41,11 @@ public class RepositoryImpl implements Repository{
 
 	@Override
 	public void saveCart(Cart cart) throws SQLException {
+		clientDAO.saveClient(cart.getClient());
 		cartDAO.saveCart(cart);
 		for (CartItem cartItem : cart.getCartItems()) {
 			cartItemDAO.saveCartItem(cartItem);
 		}
-		clientDAO.saveClient(cart.getClient());
-		
 	}
 
 	

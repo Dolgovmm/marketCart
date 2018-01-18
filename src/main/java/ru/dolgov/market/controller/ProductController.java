@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -54,6 +53,7 @@ public class ProductController extends HttpServlet{
 		if (action.equalsIgnoreCase("productId")) {
 			forward = PRODUCT;
 			String productId = request.getParameter("productId");
+			
 			Product product;
 			try {
 				product = storage.getProductById(productId);
@@ -66,11 +66,10 @@ public class ProductController extends HttpServlet{
 		if (action.equalsIgnoreCase("addProduct")) {
 			forward = PRODUCTS_LIST;
 			String cartId = getCartId(request.getSession(true));
-			String productId = (String) request.getAttribute("productId");
-			//String productQuantity = (String) request.getAttribute("quantity");
-			
+			String productId = (String) request.getParameter("productId");
+	
 			try {
-				storage.addProductToCart(cartId, productId, 1);
+				storage.addProductToCart(cartId, productId, "1");
 				request.setAttribute("products", storage.getAllProducts());
 			} catch (NumberFormatException | SQLException e) {
 				e.printStackTrace();
@@ -81,7 +80,6 @@ public class ProductController extends HttpServlet{
 			forward = PRODUCTS_IN_CART;
 
 			String cartId = getCartId(request.getSession(true));
-			
 			request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
 		}
 		
@@ -110,12 +108,13 @@ public class ProductController extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward = "";
 		String action = request.getParameter("action");
+		
 		if (action.equalsIgnoreCase("confirmOrder")) {
 			forward = CONFIRM;
 			Client client = new Client();
-			client.setName((String) request.getAttribute("name"));
-			client.setEmail((String) request.getAttribute("email"));
-			client.setPhoneNumber((String) request.getAttribute("phoneNumber"));
+			client.setName((String) request.getParameter("name"));
+			client.setEmail((String) request.getParameter("email"));
+			client.setPhoneNumber((String) request.getParameter("phoneNumber"));
 			
 			String cartId = getCartId(request.getSession(true));
 			
@@ -126,16 +125,26 @@ public class ProductController extends HttpServlet{
 			}catch (SQLException ex) {
 				ex.printStackTrace();
 			}
+			
+			forward = PRODUCTS_LIST;
+			try {
+				request.setAttribute("products", storage.getAllProducts());
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}		
 		
 		if (action.equalsIgnoreCase("updateProduct")) {
 			forward = PRODUCTS_IN_CART;
-			int quantity = (int) request.getAttribute("quantity");
+			String quantity = request.getParameter("quantity");
+			System.out.println(quantity);
 			String cartId = getCartId(request.getSession(true));
+			String productId = (String) request.getParameter("productId");
+			System.out.println(productId);
 			try {
 				storage.addProductToCart(cartId, productId, quantity);
+				request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
 			} catch (NumberFormatException | SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -150,23 +159,12 @@ public class ProductController extends HttpServlet{
 		cartId = (String)session.getAttribute("cartId");
 		if (cartId == null) {
 		    cartId = session.getId();
-		    storage.createNewCart(cartId);
 		    session.setAttribute("cartId", cartId);
-		    
 		}   
-		System.out.println(cartId);
-//		Cookie[] cookies = request.getCookies();
-//		for (int i = 0; i < cookies.length; i++) {
-//			if (cookies[i].getName().equals("cartId")) {
-//				cartId = cookies[i].getValue();
-//			}
-//		}
-//		if (cartId.isEmpty()) {
-//			cartId = request.getSession().getId();
-//			storage.createNewCart(request.getSession().getId());
-//			Cookie cookie = new Cookie("cartId", request.getSession().getId());
-//			response.addCookie(cookie);
-//		}
+		if (!storage.isCartExist(cartId)) {
+			storage.createNewCart(cartId);
+		}
+		
 		return cartId;
 	}
 }

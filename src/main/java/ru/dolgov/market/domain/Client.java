@@ -33,10 +33,6 @@ public class Client implements Serializable{
 	
 	@Column(name = "email")
 	private String email;
-	
-//	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-//	@NotNull
-//    private Cart cart;
 
 	public Integer getId() {
 		return id;
@@ -70,14 +66,6 @@ public class Client implements Serializable{
 		this.email = email;
 	}
 	
-//	public Cart getCart() {
-//		return cart;
-//	}
-//
-//	public void setCart(Cart cart) {
-//		this.cart = cart;
-//	}
-
 	@Override
 	public boolean equals(Object other) {
 		if (this == other) return true;

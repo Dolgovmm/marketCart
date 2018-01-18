@@ -38,9 +38,9 @@ public class ClientDAOImpl implements ClientDAO{
 	
 	public void saveClient(Client client) throws SQLException {
 		
-		preparedStatementGetById.setString(1, client.getName());
-		preparedStatementGetById.setString(2, client.getEmail());
-		preparedStatementGetById.setString(3, client.getPhoneNumber());
+		preparedStatementSaveClient.setString(1, client.getName());
+		preparedStatementSaveClient.setString(2, client.getEmail());
+		preparedStatementSaveClient.setString(3, client.getPhoneNumber());
 		preparedStatementSaveClient.execute();
 		
 		Statement statement = DbConnection.getConnection().createStatement();
