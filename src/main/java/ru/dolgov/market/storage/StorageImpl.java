@@ -52,7 +52,6 @@ public class StorageImpl implements Storage{
 	@Override
 	public void saveCart(String cartId) throws SQLException {
 		repository.saveCart(carts.get(cartId));
-		carts.remove(cartId);
 	}
 
 	@Override

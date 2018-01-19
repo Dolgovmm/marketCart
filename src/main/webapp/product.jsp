@@ -24,7 +24,10 @@
                     <td><c:out value="${product.description}" /></td>
                     <td><c:out value="${product.price}" /></td>
                     <td><c:out value="${product.available}" /></td>
-                    <td><a href="products?action=addProduct&productId=<c:out value="${product.id}"/>">add to cart</a></td>
+                    <td><form method="POST" action="products?action=addProduct&productId=<c:out value="${product.id}"/>" 
+							name="frmAddProduct">
+			            <input  type="submit" value="Add" />
+			        </form></td>
                 </tr>
         </tbody>
     </table>

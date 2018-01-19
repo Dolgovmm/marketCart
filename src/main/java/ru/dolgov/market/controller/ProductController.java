@@ -21,6 +21,7 @@ public class ProductController extends HttpServlet{
 	private final String PRODUCTS_LIST = "/productslist.jsp";
 	private final String PRODUCTS_IN_CART = "/productsincart.jsp";
 	private final String PRODUCT = "/product.jsp";
+	private final String EMPTY_CART = "/emptycart.jsp";
 	private final String ORDER = "/order.jsp";
 	private final String CONFIRM = "/confirm.jsp";
 	
@@ -71,7 +72,12 @@ public class ProductController extends HttpServlet{
 		}
 		
 		if (action.equalsIgnoreCase("order")) {
-			forward = ORDER;
+			String cartId = getCartId(request.getSession(true));
+			if (!storage.getProductsFromCart(cartId).isEmpty()) {
+				forward = ORDER;
+			} else {
+				forward = EMPTY_CART;
+			}	
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(forward);

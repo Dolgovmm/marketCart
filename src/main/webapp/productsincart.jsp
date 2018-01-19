@@ -14,6 +14,7 @@
                 <th>Price</th>
                 <th>Available</th>
                 <th>Quantity</th>
+                <th>Link to description</th>
                 <th colspan=2>Action</th>
             </tr>
         </thead>
@@ -24,7 +25,7 @@
                     <td><c:out value="${cartItem.getProduct().price}" /></td>
                     <td><c:out value="${cartItem.getProduct().available}" /></td>
                     <td><c:out value="${cartItem.quantity}" /></td>
-                    <td><a href="products?action=productId&productId=<c:out value="${cartItem.getProduct().id}"/>">more</a></td>
+                    <td><a href="products?action=productId&productId=<c:out value="${cartItem.getProduct().id}"/>">description</a></td>
 					<td><form method="POST" action="products?action=updateProduct&productId=<c:out value="${cartItem.getProduct().id}"/>" 
 							name="frmUpdateProduct">
 			            <input type="text" name="quantity" value="<c:out value="${cartItem.quantity}" />" /> 
