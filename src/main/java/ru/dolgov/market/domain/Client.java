@@ -78,6 +78,16 @@ public class Client implements Serializable{
 				return false;
 			}
 		}
+        if (client.getName() != null & this.getName() != null) {
+			if (!this.getName().equals(client.getName())) {
+				return false;
+			}
+		}
+        if (client.getPhoneNumber() != null & this.getPhoneNumber() != null) {
+			if (!this.getPhoneNumber().equals(client.getPhoneNumber())) {
+				return false;
+			}
+		}
         return true;
 	}
 

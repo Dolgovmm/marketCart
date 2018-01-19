@@ -28,7 +28,11 @@
 					<td><form method="POST" action="products?action=updateProduct&productId=<c:out value="${cartItem.getProduct().id}"/>" 
 							name="frmUpdateProduct">
 			            <input type="text" name="quantity" value="<c:out value="${cartItem.quantity}" />" /> 
-			            <input  type="submit" value="Submit" />
+			            <input  type="submit" value="Update" />
+			        </form></td>
+			        <td><form method="POST" action="products?action=removeProduct&productId=<c:out value="${cartItem.getProduct().id}"/>" 
+							name="frmUpdateProduct">
+			            <input  type="submit" value="Remove" />
 			        </form></td>
                 </tr>
             </c:forEach>

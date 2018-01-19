@@ -62,38 +62,12 @@ public class ProductController extends HttpServlet{
 				e.printStackTrace();
 			}
 		}
-		
-		if (action.equalsIgnoreCase("addProduct")) {
-			forward = PRODUCTS_LIST;
-			String cartId = getCartId(request.getSession(true));
-			String productId = (String) request.getParameter("productId");
-	
-			try {
-				storage.addProductToCart(cartId, productId, "1");
-				request.setAttribute("products", storage.getAllProducts());
-			} catch (NumberFormatException | SQLException e) {
-				e.printStackTrace();
-			}
-		}
 				
 		if (action.equalsIgnoreCase("productFromCart")) {
 			forward = PRODUCTS_IN_CART;
 
 			String cartId = getCartId(request.getSession(true));
 			request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
-		}
-		
-		if (action.equalsIgnoreCase("removeProduct")) {
-			forward = PRODUCTS_LIST;
-			
-			String cartId = getCartId(request.getSession(true));
-			String productId = request.getParameter("productId");
-			
-			try {
-				storage.removeProductFromCart(cartId, productId);
-			} catch (NumberFormatException | SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		
 		if (action.equalsIgnoreCase("order")) {
@@ -108,6 +82,19 @@ public class ProductController extends HttpServlet{
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String forward = "";
 		String action = request.getParameter("action");
+		
+		if (action.equalsIgnoreCase("addProduct")) {
+			forward = PRODUCTS_LIST;
+			String cartId = getCartId(request.getSession(true));
+			String productId = (String) request.getParameter("productId");
+	
+			try {
+				storage.addProductToCart(cartId, productId);
+				request.setAttribute("products", storage.getAllProducts());
+			} catch (NumberFormatException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		if (action.equalsIgnoreCase("confirmOrder")) {
 			forward = CONFIRM;
@@ -137,17 +124,28 @@ public class ProductController extends HttpServlet{
 		if (action.equalsIgnoreCase("updateProduct")) {
 			forward = PRODUCTS_IN_CART;
 			String quantity = request.getParameter("quantity");
-			System.out.println(quantity);
 			String cartId = getCartId(request.getSession(true));
 			String productId = (String) request.getParameter("productId");
-			System.out.println(productId);
 			try {
-				storage.addProductToCart(cartId, productId, quantity);
+				storage.updateProductFromCart(cartId, productId, quantity);
 				request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
 			} catch (NumberFormatException | SQLException e) {
 				e.printStackTrace();
 			}
+		}
+		
+		if (action.equalsIgnoreCase("removeProduct")) {
+			forward = PRODUCTS_IN_CART;
 			
+			String cartId = getCartId(request.getSession(true));
+			String productId = request.getParameter("productId");
+			
+			try {
+				storage.updateProductFromCart(cartId, productId, "0");
+				request.setAttribute("cartItems", storage.getProductsFromCart(cartId));
+			} catch (NumberFormatException | SQLException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		RequestDispatcher view = request.getRequestDispatcher(forward);
