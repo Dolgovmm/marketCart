@@ -1,9 +1,9 @@
 package ru.dolgov.market.storage;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.CartItem;
@@ -19,7 +19,7 @@ public class StorageImpl implements Storage{
 	
 	public StorageImpl() throws SQLException {
 		repository = new RepositoryImpl();
-		carts = new HashMap<>();
+		carts = new ConcurrentHashMap<>();
 	}
 
 	@Override
