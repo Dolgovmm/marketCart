@@ -7,7 +7,7 @@ import java.sql.SQLException;
 public class DbConnection {
 
    static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";  
-   private static final String DB_URL = "jdbc:mysql://localhost/market";
+   private static final String DB_URL = "jdbc:mysql://localhost/market?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
    private static final String USER = "user";
    private static final String PASS = "user";
    

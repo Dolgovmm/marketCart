@@ -35,7 +35,7 @@ public class TestCartDAO {
 			dao.saveCart(cart);
 			
 			Statement statement = DbConnection.getConnection().createStatement();
-			ResultSet rs = statement.executeQuery("select * from cart limit 1;");
+			ResultSet rs = statement.executeQuery("select * from cart where id = " + cart.getId() + ";");
 			
 			int id = -1;
 			int clientId = -1;
@@ -46,10 +46,11 @@ public class TestCartDAO {
 				id = rs.getInt("id");
 				clientId = rs.getInt("client_id");
 				totalItems = rs.getInt("total_items");
-				productsCost = rs.getInt("prducts_cost");
+				productsCost = rs.getInt("products_cost");
 			}
 			
 			DbConnection.getConnection().rollback();
+			DbConnection.getConnection().setAutoCommit(true);
 			
 			Assert.assertTrue(cart.getId() == id && cart.getClient().getId() == clientId 
 					&& cart.getTotalItems() == totalItems && cart.getProductsCost() == productsCost);
