@@ -4,9 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>You have order</title>
 </head>
 <body>
-
+	<h2>Order saved</h2>
+	<p><a href="products?action=productsList">Back to products list</a></p>
 </body>
 </html>

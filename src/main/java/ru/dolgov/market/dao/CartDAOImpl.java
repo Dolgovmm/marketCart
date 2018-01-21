@@ -33,10 +33,6 @@ public class CartDAOImpl implements CartDAO{
 		cart.setId(id);
 	}
 	
-	public void removeCart(Cart cart) {
-		
-	}
-	
 	public void updateCart(Cart cart) throws SQLException {
 		
 		preparedStatementUpdateCart.setInt(1, cart.getClient().getId());

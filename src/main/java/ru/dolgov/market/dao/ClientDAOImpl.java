@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import ru.dolgov.market.dao.interfaces.ClientDAO;
-import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.jdbc.DbConnection;
 

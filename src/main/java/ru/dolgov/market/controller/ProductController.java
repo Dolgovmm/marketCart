@@ -118,13 +118,7 @@ public class ProductController extends HttpServlet{
 			}catch (SQLException ex) {
 				ex.printStackTrace();
 			}
-			
-			forward = PRODUCTS_LIST;
-			try {
-				request.setAttribute("products", storage.getAllProducts());
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
 		}		
 		
 		if (action.equalsIgnoreCase("updateProduct")) {
