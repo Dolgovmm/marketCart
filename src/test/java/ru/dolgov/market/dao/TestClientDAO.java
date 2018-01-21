@@ -29,6 +29,7 @@ public class TestClientDAO {
 			preparedStatement.setString(1, client.getName());
 			preparedStatement.setString(2, client.getEmail());
 			preparedStatement.setString(3, client.getPhoneNumber());
+			preparedStatement.execute();
 			
 			Statement statement = DbConnection.getConnection().createStatement();
 			ResultSet rs = statement.executeQuery("select @@IDENTITY");

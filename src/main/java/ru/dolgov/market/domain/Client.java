@@ -98,7 +98,7 @@ public class Client implements Serializable{
 	@Override
 	public int hashCode() {
 		if (getId() != null) {
-			return (int) (31 * getId());
+			return (int) (getName().hashCode() + getEmail().hashCode() + getPhoneNumber().hashCode());
 		}
 		return 0;
 	}
