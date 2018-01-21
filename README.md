@@ -1,38 +1,40 @@
 <a name="tech"></a>
-<h2>Технологии</h2>
-
+<h2>Technology user</h2>
 <ul class="discharged">
-    <li>сервлет: Servlet API , JavaServer Pages</li>
-    <li>доступ к данным: JDBC, JPA</li>
-    <li>тесты: JUnit;</li>
-    <li>база данных: MySQL</li>
-    <li>контейнер сервлетов: Apache Tomcat</li>
+    <li>Servlet: Servlet API , JavaServer Pages</li>
+    <li>Access to DB: JDBC, JPA</li>
+    <li>Tests: JUnit;</li>
+    <li>DB: MySQL</li>
+    <li>Servlet container: Apache Tomcat</li>
 </ul>
 
 
 <a name="func"></a>
-<h2>Функционал магазина</h2>
+<h2>Functional</h2>
 
 <ol class="discharged">
-    <li>Корзина покупателя
+    <li>Cart
         <ul>
-            <li>выбор товаров: добавление, удаление, изменение количества</li>
-            <li>просмотр содержимого корзины</li>
-            <li>оформление заказа</li>
-            <li>хранение корзины зарегистрированного покупателя в базе данных</li>
+            <li>selecting products: adding, deleting, changing the quantity</li>
+            <li>view the content of cart</li>
+            <li>ordering</li>
         </ul>
     </li>
 </ol>
 
 <a name="db"></a>
-<h2>Модель базы данных</h2>
+<h2>Model DB</h2>
 
-<p>База данных приложения состоит из 4 связанных таблиц, отображаемых средствами jdbc в 4 класса.</p>
+<p>Application DB  consists in 4 linked tables given by means jdbc in 4 classes.</p>
 
 <br>
-<p>Слой доступа к данным представлен классами DAO.</p>
+<p>The data access layer is represented by DAO classes.</p>
 
 <a name="deploy"></a>
 <h2>Deploy</h2>
-Для работоспособности корзины интернет магазина необходимо создать базу данных MySQL. Скрипт для создания - script.sql.
-Для поднятия сервиса необходимо собрать war файл с помощью команды maven package. Затем полученный war файл нужно поместить в контейнер сервлетов Apache TomCat. Путь для war файла: <tomcat_folder>/webapps/. После этого нужно запустить TomCat командой startup.sh (startup.bat) и в браузере перейти по адресу: http//:localhost:8080/market.
+<ul class = "discharged">
+    <li>Create DB MySQL. Creating with scropt - script.sql</li>
+    <li>Make war file with command: maven package</li>
+    <li>War file put in a servlet container Apache TomCat. Path for war file: <tomcat_folder>/webapps/</li>
+    <li>Start TomCat with command startup.sh (startup.bat) and go to page in browser: http//:localhost:8080/market</li>
+</ul>
