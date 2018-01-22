@@ -1,9 +1,9 @@
 package ru.dolgov.market.storage;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.CartItem;
@@ -19,7 +19,7 @@ public class StorageImpl implements Storage{
 	
 	public StorageImpl() throws SQLException {
 		repository = new RepositoryImpl();
-		carts = new HashMap<>();
+		carts = new ConcurrentHashMap<>();
 	}
 
 	@Override
@@ -33,35 +33,40 @@ public class StorageImpl implements Storage{
 	}
 
 	@Override
-	public void addProductToCart(String cartId, String productId, int productQuantity) throws NumberFormatException, SQLException {
+	public void addProductToCart(String cartId, String productId) throws NumberFormatException, SQLException {
 		Product product = repository.getProductById(Integer.parseInt(productId));
-		carts.get(cartId).update(product, productQuantity);
+		carts.get(cartId).update(product, 1);
 	}
 
 	@Override
-	public void removeProductFromCart(String cartId, String productId) throws NumberFormatException, SQLException {
+	public void updateProductFromCart(String cartId, String productId, String quantity) throws NumberFormatException, SQLException {
 		Product product = repository.getProductById(Integer.parseInt(productId));
-		carts.get(cartId).update(product, 0);
+		carts.get(cartId).update(product, Integer.parseInt(quantity));
 	}
 
 	@Override
-	public List<CartItem> getProductsFromCart(String id) {
-		return carts.get(id).getCartItems();
+	public List<CartItem> getProductsFromCart(String cartId) {
+		return carts.get(cartId).getCartItems();
 	}
 
 	@Override
-	public void saveCart(String id) throws SQLException {
-		repository.saveCart(carts.get(id));
+	public void saveCart(String cartId) throws SQLException {
+		repository.saveCart(carts.get(cartId));
 	}
 
 	@Override
-	public void createNewCart(String id) {
-		carts.put(id, new Cart());
+	public void createNewCart(String cartId) {
+		carts.put(cartId, new Cart());
 	}
 	
 	@Override
 	public void addClientToCart(String cartId, Client client) {
 		carts.get(cartId).setClient(client);
+	}
+	
+	@Override
+	public boolean isCartExist(String cartId) {
+		return carts.keySet().contains(cartId);
 	}
 
 }

@@ -1,5 +1,6 @@
 package ru.dolgov.market.dao;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,51 +16,82 @@ public class ProductDAOImpl implements ProductDAO{
 	private final String GET_ALL_PRODUCTS = "select * from products;";
 	private final String GET_PRODUCT_BY_ID = "select * from products where id = ?";
 	
-	PreparedStatement preparedStatementGetAll;
-	PreparedStatement preparedStatementGetById;
-	
-	public ProductDAOImpl() throws SQLException {
-		preparedStatementGetAll = DbConnection.getConnection().prepareStatement(GET_ALL_PRODUCTS);
-		preparedStatementGetById = DbConnection.getConnection().prepareStatement(GET_PRODUCT_BY_ID);
-	}
-	
 	public List<Product> getAllProducts() throws SQLException {
 		
-		ResultSet rs = preparedStatementGetAll.executeQuery();
+		Connection connection = null;
 		
-		List<Product> products = new ArrayList<>();
-		
-		while(rs.next()) {
-			int id = rs.getInt("id");
-			String name = rs.getString("name");
-			String description = rs.getString("description");
-			int article = rs.getInt("article");
-			int price = rs.getInt("price");
-			boolean available = rs.getBoolean("available");
-			Product product = new Product(id, name, description, article, price, available);
-			products.add(product);
+		try {
+			connection = DbConnection.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_PRODUCTS);
+
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			List<Product> products = new ArrayList<>();
+			
+			while(rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String description = rs.getString("description");
+				int article = rs.getInt("article");
+				int price = rs.getInt("price");
+				boolean available = rs.getBoolean("available");
+				Product product = new Product(id, name, description, article, price, available);
+				products.add(product);
+			}
+			
+			rs.close();
+			preparedStatement.close();
+			
+			return products;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		}finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				}catch (Exception ignore) {}
+			}
 		}
-		
-		return products;
-		
 	}
 	
 	public Product getProductById(int id) throws SQLException {
 		
-		preparedStatementGetById.setInt(1, id);
-		ResultSet rs = preparedStatementGetById.executeQuery();
+		Connection connection = null;
 		
-		Product product = new Product();
-	
-		if (rs.next()) {;
-			product.setId(rs.getInt("id"));
-			product.setName(rs.getString("name"));
-			product.setDescription(rs.getString("description"));
-			product.setArticle(rs.getInt("article"));
-			product.setPrice(rs.getInt("price"));
-			product.setAvailable(rs.getBoolean("available"));
+		try {
+			connection = DbConnection.getConnection();
+			PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID);
+			
+			preparedStatement.setInt(1, id);
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			Product product = new Product();
+		
+			if (rs.next()) {;
+				product.setId(rs.getInt("id"));
+				product.setName(rs.getString("name"));
+				product.setDescription(rs.getString("description"));
+				product.setArticle(rs.getInt("article"));
+				product.setPrice(rs.getInt("price"));
+				product.setAvailable(rs.getBoolean("available"));
+			}
+			
+			rs.close();
+			preparedStatement.close();
+			
+			return product;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		}finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				}catch (Exception ignore) {}
+			}
 		}
-		
-		return product;
 	}
 }

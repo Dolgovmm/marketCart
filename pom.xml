@@ -47,6 +47,13 @@
 	    <artifactId>jstl</artifactId>
 	    <version>1.2</version>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
+	<dependency>
+	    <groupId>org.apache.tomcat</groupId>
+	    <artifactId>tomcat-jdbc</artifactId>
+	    <version>8.5.24</version>
+	</dependency>
+
 	
   </dependencies>
   
@@ -66,6 +73,10 @@
     			<encoding>UTF-8</encoding>
     		</configuration>
     	</plugin>
+    	<plugin>
+	        <artifactId>maven-war-plugin</artifactId>
+	        <version>2.6</version>
+	    </plugin>
     </plugins>
   </build>
 </project>

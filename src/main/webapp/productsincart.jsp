@@ -1,6 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,21 +14,26 @@
                 <th>Price</th>
                 <th>Available</th>
                 <th>Quantity</th>
+                <th>Link to description</th>
                 <th colspan=2>Action</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach items="${cartItems}" var="cartItem">
                 <tr>
-                    <td><c:out value="${cartItem.product.name}" /></td>
-                    <td><c:out value="${cartItem.product.price}" /></td>
-                    <td><c:out value="${cartItem.product.available}" /></td>
+                    <td><c:out value="${cartItem.getProduct().name}" /></td>
+                    <td><c:out value="${cartItem.getProduct().price}" /></td>
+                    <td><c:out value="${cartItem.getProduct().available}" /></td>
                     <td><c:out value="${cartItem.quantity}" /></td>
-                    <td><a href="products?action=productId&productId=<c:out value="${cartItem.product.id}"/>">more</a></td>
-					<td><form method="POST" action='updateProduct' name="frmUpdateProduct">
-			            
+                    <td><a href="products?action=productId&productId=<c:out value="${cartItem.getProduct().id}"/>">description</a></td>
+					<td><form method="POST" action="products?action=updateProduct&productId=<c:out value="${cartItem.getProduct().id}"/>" 
+							name="frmUpdateProduct">
 			            <input type="text" name="quantity" value="<c:out value="${cartItem.quantity}" />" /> 
-			            <input  type="submit" value="Submit" />
+			            <input  type="submit" value="Update" />
+			        </form></td>
+			        <td><form method="POST" action="products?action=removeProduct&productId=<c:out value="${cartItem.getProduct().id}"/>" 
+							name="frmUpdateProduct">
+			            <input  type="submit" value="Remove" />
 			        </form></td>
                 </tr>
             </c:forEach>

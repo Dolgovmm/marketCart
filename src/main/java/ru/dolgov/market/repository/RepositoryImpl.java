@@ -13,6 +13,7 @@ import ru.dolgov.market.dao.interfaces.ClientDAO;
 import ru.dolgov.market.dao.interfaces.ProductDAO;
 import ru.dolgov.market.domain.Cart;
 import ru.dolgov.market.domain.CartItem;
+import ru.dolgov.market.domain.Client;
 import ru.dolgov.market.domain.Product;
 
 public class RepositoryImpl implements Repository{
@@ -41,13 +42,16 @@ public class RepositoryImpl implements Repository{
 
 	@Override
 	public void saveCart(Cart cart) throws SQLException {
+		Client clientFromDb = clientDAO.getClientByEmail(cart.getClient().getEmail());
+		if (!clientFromDb.equals(cart.getClient())) {
+			clientDAO.saveClient(cart.getClient());
+		}else {
+			cart.getClient().setId(clientFromDb.getId());
+		}
 		cartDAO.saveCart(cart);
 		for (CartItem cartItem : cart.getCartItems()) {
 			cartItemDAO.saveCartItem(cartItem);
 		}
-		clientDAO.saveClient(cart.getClient());
-		
 	}
-
 	
 }

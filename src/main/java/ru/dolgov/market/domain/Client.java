@@ -2,13 +2,11 @@ package ru.dolgov.market.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -34,9 +32,11 @@ public class Client implements Serializable{
 	@Column(name = "email")
 	private String email;
 	
-//	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-//	@NotNull
-//    private Cart cart;
+	public Client() {
+		this.name = "";
+		this.email = "";
+		this.phoneNumber = "";
+	}
 
 	public Integer getId() {
 		return id;
@@ -70,14 +70,6 @@ public class Client implements Serializable{
 		this.email = email;
 	}
 	
-//	public Cart getCart() {
-//		return cart;
-//	}
-//
-//	public void setCart(Cart cart) {
-//		this.cart = cart;
-//	}
-
 	@Override
 	public boolean equals(Object other) {
 		if (this == other) return true;
@@ -85,8 +77,18 @@ public class Client implements Serializable{
  
         Client client = (Client) other;
  
-        if (client.getId() != null) {
-			if (!this.getId().equals(client.getId())) {
+        if (client.getEmail() != null & this.getEmail() != null) {
+			if (!this.getEmail().equals(client.getEmail())) {
+				return false;
+			}
+		}
+        if (client.getName() != null & this.getName() != null) {
+			if (!this.getName().equals(client.getName())) {
+				return false;
+			}
+		}
+        if (client.getPhoneNumber() != null & this.getPhoneNumber() != null) {
+			if (!this.getPhoneNumber().equals(client.getPhoneNumber())) {
 				return false;
 			}
 		}
@@ -96,7 +98,7 @@ public class Client implements Serializable{
 	@Override
 	public int hashCode() {
 		if (getId() != null) {
-			return (int) (31 * getId());
+			return (int) (getName().hashCode() + getEmail().hashCode() + getPhoneNumber().hashCode());
 		}
 		return 0;
 	}

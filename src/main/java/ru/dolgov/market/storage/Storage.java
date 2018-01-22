@@ -13,9 +13,9 @@ public interface Storage {
 	
 	public Product getProductById(String id) throws NumberFormatException, SQLException;
 	
-	public void addProductToCart(String cartId, String productId, int productQuantity) throws NumberFormatException, SQLException;
+	public void addProductToCart(String cartId, String productId) throws NumberFormatException, SQLException;
 	
-	public void removeProductFromCart(String cartId, String productId) throws NumberFormatException, SQLException;
+	public void updateProductFromCart(String cartId, String productId, String quantity) throws NumberFormatException, SQLException;
 	
 	public List<CartItem> getProductsFromCart(String id);
 	
@@ -24,4 +24,6 @@ public interface Storage {
 	public void createNewCart(String id);
 	
 	public void addClientToCart(String cartId, Client client);
+	
+	public boolean isCartExist(String cartId);
 }
