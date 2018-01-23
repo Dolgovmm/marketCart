@@ -2,6 +2,19 @@ package ru.dolgov.market.domain;
 
 import java.io.Serializable;
 
+<<<<<<< HEAD
+=======
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "clients")
+>>>>>>> 527337fc70c28a1dde99965dcde669f263d72eeb
 public class Client implements Serializable{
 
 	private static final long serialVersionUID = 1L;
